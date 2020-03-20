@@ -24,4 +24,7 @@ public interface UserMapper {
     @Update("UPDATE NEW_SCHEMA.USER SET token = #{token} where username = #{username}")
     void updateToken(@Param("token") String token,
                      @Param("username") String username);
+
+    @Select("SELECT * From NEW_SCHEMA.USER WHERE id = #{id}")
+    User findById(Integer id);
 }

@@ -48,7 +48,6 @@
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span th:text="${session.username}"></span>
-                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a data-toggle="modal" data-target="#myModal">个人信息</a></li>
@@ -72,7 +71,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">个人信息</h4>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
                 <h2>用户名</h2>
@@ -97,55 +96,26 @@
         <div>
             <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>发现话题</h2>
         </div>
-        <hr>
-        <div class="media" th:each="topic:${pageDTO.getTopic()}">
-            <div class="media-left">
-                <a href="#">
-                    <img class="media-object img-circle" th:src="${topic.getUser().getAvatar()}">
-                </a>
-            </div>
-            <div class="media-body">
-                <h3 class="media-heading" th:text="${topic.getTitle()}"></h3>
-                <h5 th:text="${topic.getId()}"></h5>
-                <h4 class="media-heading" th:text="${#strings.abbreviate(topic.getDescription(),40)}"></h4>
-                <span class="text-find"><span th:text="${topic.getComment_count()}"></span> 回复 · <span th:text="${topic.getView_count()}"></span> 浏览 · 21：23：12</span>
-            </div>
-        </div>
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li th:if="${pageDTO.isFirstButton()!=false}">
-                    <a href="/?page=1" aria-label="Previous">
-                        <span aria-hidden="flase"><<</span>
-                    </a>
-                </li>
 
-                <li th:if="${pageDTO.isPrevButton()==true}">
-                    <a th:href="@{/(page=${pageDTO.getCurrentPage()-1})}">
-                        <span aria-hidden="false"><</span>
-                    </a>
-                </li>
 
-                <li  th:each="pageIndex:${pageDTO.getPageShow()}" th:class="${pageIndex==pageDTO.getCurrentPage()}?'active':''"><a th:href="@{/(page=${pageIndex})}" th:text="${pageIndex}"></a></li>
-
-                <li th:if="${pageDTO.isNextButton()==true}">
-                    <a th:href="@{/(page=${pageDTO.getCurrentPage()+1})}">
-                        <span aria-hidden="false">></span>
-                    </a>
-                </li>
-
-                <li th:if="${pageDTO.isFinalButton()!=false}">
-                    <a th:href="@{/(page=${pageDTO.getFinalPageIndex()})}" >
-                        <span aria-hidden="false">>></span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
     </div>
     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="background-color:lavenderblush;">
-        <h1>没啥好说的</h1>
-        <h3>§随便写</h3>
-        <h3>§随便写</h3>
-        <h3>§随便写</h3>
+        <div>
+            <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>发布者:</h4>
+
+            <div class="media">
+                <div class="media-left">
+                    <a href="#">
+                        <img class="media-object img-circle" th:src="${topicDTO.getUser().getAvatar()}">
+                    </a>
+                </div>
+                <div class="media-body">
+                    <h3 class="media-heading" th:text="${topicDTO.getUser().getUsername()}"></h3>
+                </div>
+            </div>
+            <h4><span class="glyphicon glyphicon-time" aria-hidden="true"></span>发布时间:</h4>
+            <h3 th:text="${topicDTO.getC_time()}"></h3>
+        </div>
     </div>
 
 </div>

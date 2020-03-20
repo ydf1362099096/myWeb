@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Serving Web Content</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+
+    <script type="text/javascript">
+        function checkNull() {
+        if(topicForm.topicInput.value==""){
+            alert("标题不能为空");
+            return false;
+        }
+        if(topicForm.description.value==""){
+            alert("话题描述不能为空");
+            return false;
+        }
+        return true;
+    }</script>
+
+
+</head>
+<body>
+
+        <nav class="navbar navbar-default boxShadow " role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#menu" aria-expanded="false">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="/">a new blog</a>
+                </div>
+
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="navbar-collapse collapse" id="menu" aria-expanded="false" style="height: 1px;">
+                    <ul class="nav navbar-nav navbar-left">
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/aboutMe">关于我</a></li>
+                        <li><a href="/categories">博客分类</a></li>
+                        <li><a href="/updateLog">更新</a></li>
+                        <li><a href="/community">讨论区</a></li>
+                        <li><a href="/commentsRecord">留言区</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li th:if="${session.user==null}" class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span>登陆</span>
+                                <span class="caret">
+                        </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="/login">登陆</a></li>
+                                <li><a href="#">注册</a></li>
+                            </ul>
+                        </li>
+
+
+                        <li class="dropdown" th:if="${session.user!=null}">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                                <span th:text="${session.username}"></span>
+                                <span class="caret">
+                        </span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">个人信息</a></li>
+                                <li><a href="#">发起话题</a></li>
+                                <li><a href="#">Something else here</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出登陆</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    </li>
+
+                    </ul>
+
+                </div><!-- /.navbar-collapse -->
+            </div><!-- /.container-fluid -->
+        </nav>
+
+
+<div class="row" style="margin:30px">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="background-color:lavender;">
+        <div>
+            <h2><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>发起话题</h2>
+        </div>
+        <hr>
+        <div>
+            <form action="/publish" method="post" name="topicForm" onsubmit="return checkNull()">
+
+                <div th:if="${publishWrong!=null}" ><h4 style="color:red" th:text="${publishWrong}"></h4><hr></div>
+                <div class="form-group">
+                    <label for="topicInput">话题标题</label>
+                    <input class="form-control" name="topicInput" id="topicInput" placeholder="请输入话题标题...">
+                </div>
+                <div class="form-group">
+                    <label for="description">话题描述</label>
+                    <textarea class="form-control" rows="5" name="description" id="description"></textarea>
+                </div>
+                <div><button type="submit" class="btn btn-success btn-lg" style="float:right;margin-bottom: 10px">提交</button></div>
+
+            </form>
+
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="background-color:lavenderblush;">
+        <h1>没啥好说的</h1>
+        <h3>§随便写</h3>
+        <h3>§随便写</h3>
+        <h3>§随便写</h3>
+    </div>
+
+</div>
+</body>
+
+</html>

@@ -7,6 +7,15 @@ public class User {
     private Long create_time;
     private Long modified_time;
     private String token;
+    private String avatar;
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 
     public String getToken() {
         return token;
