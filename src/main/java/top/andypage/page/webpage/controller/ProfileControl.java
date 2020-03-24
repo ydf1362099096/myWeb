@@ -35,12 +35,12 @@ public class ProfileControl {
 
 
         PageDTO pageDTO=topicService.profilePage(user.getId(),pageIndex,size);
-        model.addAttribute("pageDTO", pageDTO);
-        System.out.println("ID is "+pageDTO.getPageShow());
 
         if(action.equals("myTopic")){
             model.addAttribute("section","我的话题");
             model.addAttribute("pageDTO", pageDTO);
+            model.addAttribute("action", "myTopic");
+            System.out.println("1231231");
         }
 
         return "profile";

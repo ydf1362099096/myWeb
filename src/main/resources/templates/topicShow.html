@@ -3,13 +3,13 @@
 <head>
     <title>Getting Started: Serving Web Content</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/my.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/my.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
-<body>
+<body style="background: #ededed">
 <nav class="navbar navbar-default boxShadow " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -91,15 +91,21 @@
     </div>
 </div>
 
-<div class="row" style="margin:30px">
-    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="background-color:lavender;">
+<div class="row" style="margin:30px;background: white">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12">
         <div>
-            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>发现话题</h2>
+
+            <h2><span class=" glyphicon glyphicon-comment" aria-hidden="true"></span>话题</h2>
+            <hr>
+            <h3 th:text="${topicDTO.getTitle()}" style="margin-top:20px;"></h3>
+            <h6 style="color: #9d9d9d" th:text="${topicDTO.getTag()}+' | 发布时间：'+${#dates.format(topicDTO.getCreate_time(), 'yyyy-MM-dd')}+' | 浏览数：'+${topicDTO.getView_count()}"></h6>
         </div>
+        <hr>
+        <div><span th:text="${topicDTO.getDescription()}"></span></div>
 
 
     </div>
-    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="background-color:lavenderblush;">
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
         <div>
             <h4><span class="glyphicon glyphicon-user" aria-hidden="true"></span>发布者:</h4>
 
@@ -110,11 +116,11 @@
                     </a>
                 </div>
                 <div class="media-body">
-                    <h3 class="media-heading" th:text="${topicDTO.getUser().getUsername()}"></h3>
+                    <h5 class="media-heading" th:text="${topicDTO.getUser().getUsername()}"></h5>
                 </div>
             </div>
             <h4><span class="glyphicon glyphicon-time" aria-hidden="true"></span>发布时间:</h4>
-            <h3 th:text="${topicDTO.getC_time()}"></h3>
+            <h5 th:text="${topicDTO.getC_time()}"></h5>
         </div>
     </div>
 

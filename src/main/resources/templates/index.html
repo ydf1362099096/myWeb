@@ -100,12 +100,13 @@
         <hr>
         <div class="media" th:each="topic:${pageDTO.getTopic()}">
             <div class="media-left">
-                <a href="#">
+                <a th:href="@{'/topicShow/'+${topic.getId()}}">
                     <img class="media-object img-circle" th:src="${topic.getUser().getAvatar()}">
                 </a>
             </div>
             <div class="media-body">
-                <h3 class="media-heading" th:text="${topic.getTitle()}"></h3>
+                <a th:href="@{'/topicShow/'+${topic.getId()}}" style="text-decoration: none;color: black"><h3 class="media-heading" th:text="${topic.getTitle()} " ></h3></a>
+
                 <h5 th:text="${topic.getId()}"></h5>
                 <h4 class="media-heading" th:text="${#strings.abbreviate(topic.getDescription(),40)}"></h4>
                 <span class="text-find"><span th:text="${topic.getComment_count()}"></span> 回复 · <span th:text="${topic.getView_count()}"></span> 浏览 · 21：23：12</span>

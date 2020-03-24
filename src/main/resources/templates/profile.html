@@ -96,7 +96,7 @@
     <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="background-color:lavender;">
 
         <div>
-            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>发现话题</h2>
+            <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true" th:text="${section}"></span></h2>
         </div>
         <hr>
         <div class="media" th:if="${pageDTO}!=null" th:each="topic:${pageDTO.getTopic()}">
@@ -126,7 +126,7 @@
                     </a>
                 </li>
 
-                <li  th:each="pageIndex:${pageDTO.getPageShow()}" th:class="${pageIndex==pageDTO.getCurrentPage()}?'active':''"><a th:href="@{/(page=${pageIndex})}" th:text="${pageIndex}"></a></li>
+                <li  th:each="pageIndex:${pageDTO.getPageShow()}" th:class="${pageIndex==pageDTO.getCurrentPage()}?'active':''"><a th:href="@{'/profile/'+${action}+'/?page='+${pageIndex}}" th:text="${pageIndex}"></a></li>
 
                 <li th:if="${pageDTO.isNextButton()==true}">
                     <a th:href="@{/(page=${pageDTO.getCurrentPage()+1})}">

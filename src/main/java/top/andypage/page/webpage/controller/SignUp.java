@@ -50,6 +50,7 @@ public class SignUp {
                 long time=System.currentTimeMillis();
                 newUser.setCreate_time(time);
                 newUser.setModified_time(time);
+                newUser.setToken(token);
                 userMapper.insert(newUser);
 
                 request.getSession().setAttribute("user", newUser);

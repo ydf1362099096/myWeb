@@ -24,6 +24,7 @@ public class SessionInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Cookie cok[]=request.getCookies();
         if(cok!=null&&cok.length!=0) {
+            System.out.println("you cookie");
             for (Cookie cookie : cok) {
                 if (cookie.getName().equals("tokenForAndy")) {
                     String token = cookie.getValue();

@@ -128,14 +128,16 @@ public class TopicService {
         }else if(page>=fullPage-2){
             Integer wholePage=Math.max(1,fullPage-4);
             for(int i=fullPage;i>=wholePage;i--){
-                topicPages.add(fullPage-i+2);
+                topicPages.add(fullPage-i+1);
             }
         }else{
-            topicPages.add(page-2);
-            topicPages.add(page-1);
-            topicPages.add(page);
-            topicPages.add(page+1);
-            topicPages.add(page+2);
+            Integer wholePageMax=Math.min(5,fullPage);
+            Integer wholePageMin=Math.max(1,fullPage-4);
+            for(int i =page-2;i<=page+2;i++){
+                if(i>=wholePageMin&&i<=wholePageMax){
+                    topicPages.add(i);
+                }
+            }
         }
 
         PageDTO pageDTO=new PageDTO();
