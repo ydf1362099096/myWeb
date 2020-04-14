@@ -7,15 +7,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import top.andypage.page.webpage.Mapper.UserMapper;
 import top.andypage.page.webpage.model.User;
+import top.andypage.page.webpage.model.UserExample;
 import top.andypage.page.webpage.provider.tokenProvider;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 @Controller
-public class SignUp {
+public class SignupController {
 
     @Autowired
     private UserMapper userMapper;
@@ -35,10 +37,11 @@ public class SignUp {
                          HttpServletResponse response){
         if(!username.isEmpty()&&!password.isEmpty()){
 
-            User user=userMapper.findByUser(username);
+            UserExample userExample=new UserExample();
+            userExample.createCriteria().andUsernameEqualTo(username);
+            List<User> users= userMapper.selectByExample(userExample);
 
-
-            if(user==null){
+            if (users.size() == 0) {
 
                 String token=newToken.makeToken();
                 SimpleDateFormat dateformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -48,8 +51,8 @@ public class SignUp {
                 newUser.setUsername(username);
                 newUser.setPassword(password);
                 long time=System.currentTimeMillis();
-                newUser.setCreate_time(time);
-                newUser.setModified_time(time);
+                newUser.setCreateTime(time);
+                newUser.setModifiedTime(time);
                 newUser.setToken(token);
                 userMapper.insert(newUser);
 
@@ -58,7 +61,7 @@ public class SignUp {
                 request.getSession().setAttribute("avatar", "avatarImg/default.jpeg");
                 String m_time=dateformat.format(System.currentTimeMillis());
                 request.getSession().setAttribute("modified_time", m_time);
-                String c_time=dateformat.format(newUser.getCreate_time());
+                String c_time=dateformat.format(newUser.getCreateTime());
                 request.getSession().setAttribute("create_time", c_time);
                 request.getSession().setAttribute("wrongInfo", null);
 

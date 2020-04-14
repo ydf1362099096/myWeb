@@ -1,34 +1,47 @@
 package top.andypage.page.webpage.dataTransferObject;
 
+import top.andypage.page.webpage.model.Topic;
 import top.andypage.page.webpage.model.User;
 
+import java.util.List;
+
 public class topicDTO {
-    private Integer id;
+    private Long id;
     private String title;
-    private String description;
-    private long create_time;
-    private long modified_time;
-    private Integer publisher_id;
-    private Integer comment_count;
-    private Integer view_count;
-    private Integer like_count;
+    private Long createTime;
+    private Long modifiedTime;
+    private Long publisherId;
+    private Integer commentCount;
+    private Integer viewCount;
+    private Integer likeCount;
     private String tag;
+    private String description;
     private User user;
-    private String c_time;
+    private List<String> tagList;
+    private List<Topic> relatedTopics;
 
-    public String getC_time() {
-        return c_time;
+
+    public List<Topic> getRelatedTopics() {
+        return relatedTopics;
     }
 
-    public void setC_time(String c_time) {
-        this.c_time = c_time;
+    public void setRelatedTopics(List<Topic> relatedTopics) {
+        this.relatedTopics = relatedTopics;
     }
 
-    public Integer getId() {
+    public List<String> getTagList() {
+        return tagList;
+    }
+
+    public void setTagList(List<String> tagList) {
+        this.tagList = tagList;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -40,60 +53,52 @@ public class topicDTO {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public Long getCreateTime() {
+        return createTime;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setCreateTime(Long createTime) {
+        this.createTime = createTime;
     }
 
-    public long getCreate_time() {
-        return create_time;
+    public Long getModifiedTime() {
+        return modifiedTime;
     }
 
-    public void setCreate_time(long create_time) {
-        this.create_time = create_time;
+    public void setModifiedTime(Long modifiedTime) {
+        this.modifiedTime = modifiedTime;
     }
 
-    public long getModified_time() {
-        return modified_time;
+    public long getPublisherId() {
+        return publisherId;
     }
 
-    public void setModified_time(long modified_time) {
-        this.modified_time = modified_time;
+    public void setPublisherId(long publisherId) {
+        this.publisherId = publisherId;
     }
 
-    public Integer getPublisher_id() {
-        return publisher_id;
+    public Integer getCommentCount() {
+        return commentCount;
     }
 
-    public void setPublisher_id(Integer publisher_id) {
-        this.publisher_id = publisher_id;
+    public void setCommentCount(Integer commentCount) {
+        this.commentCount = commentCount;
     }
 
-    public Integer getComment_count() {
-        return comment_count;
+    public Integer getViewCount() {
+        return viewCount;
     }
 
-    public void setComment_count(Integer comment_count) {
-        this.comment_count = comment_count;
+    public void setViewCount(Integer viewCount) {
+        this.viewCount = viewCount;
     }
 
-    public Integer getView_count() {
-        return view_count;
+    public Integer getLikeCount() {
+        return likeCount;
     }
 
-    public void setView_count(Integer view_count) {
-        this.view_count = view_count;
-    }
-
-    public Integer getLike_count() {
-        return like_count;
-    }
-
-    public void setLike_count(Integer like_count) {
-        this.like_count = like_count;
+    public void setLikeCount(Integer likeCount) {
+        this.likeCount = likeCount;
     }
 
     public String getTag() {
@@ -102,6 +107,14 @@ public class topicDTO {
 
     public void setTag(String tag) {
         this.tag = tag;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public User getUser() {

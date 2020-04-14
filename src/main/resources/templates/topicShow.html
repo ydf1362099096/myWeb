@@ -8,8 +8,9 @@
     <link rel="stylesheet" href="/css/my.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/myJs.js" type="application/javascript"></script>
 </head>
-<body style="background: #ededed">
+<body style="background: #e0e1e6">
 <nav class="navbar navbar-default boxShadow " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -18,17 +19,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">a new blog</a>
+            <a class="navbar-brand" href="/">小小论坛</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="navbar-collapse collapse" id="menu" aria-expanded="false" style="height: 1px;">
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/">首页</a></li>
-                <li><a href="/aboutMe">关于我</a></li>
-                <li><a href="/categories">博客分类</a></li>
-                <li><a href="/updateLog">更新</a></li>
-                <li><a href="/community">讨论区</a></li>
+                <li><a href="/aboutMe">最热话题</a></li>
+                <li><a href="/categories">站长文章</a></li>
                 <li><a href="/commentsRecord">留言区</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -48,11 +47,12 @@
                 <li class="dropdown" th:if="${session.user!=null}">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                         <span th:text="${session.username}"></span>
+                        <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu">
                         <li><a data-toggle="modal" data-target="#myModal">个人信息</a></li>
+                        <li><a href="/profile/myTopic">个人主页</a></li>
                         <li><a href="/publish">发起话题</a></li>
-                        <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/logout">退出登陆</a></li>
                     </ul>
@@ -71,7 +71,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                <h4 class="modal-title" id="myModalLabel">个人信息</h4>
             </div>
             <div class="modal-body">
                 <h2>用户名</h2>
@@ -84,9 +84,39 @@
                 <div><img th:src="${session.avatar}" height="60" width="60"/></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button href="/logout" type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button onclick="javascript:window.location.href='/logout'" type="button" class="btn btn-primary">退出登陆</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myNewModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title text-center" id="myModalLabel2">登录</h4>
+            </div>
+            <a th:if="${session.wrongInfo!=null}" class="dropdown">未注册或用户名密码错误</a>
+            <form>
+                <div class="modal-body" id = "model-body">
+
+                    <div class="form-group">
+                        <input type="text" name="username" class="form-control" placeholder="用户名" autocomplete="off" id="username">
+                    </div>
+                    <div class="form-group">
+
+                        <input type="password" name="password" class="form-control" placeholder="密码" autocomplete="off" id="password">
+                    </div>
+                </div>
+            </form>
+                <div class="modal-footer">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary form-control" onclick="Login()">登录</button>
+                    </div>
+                </div>
+
         </div>
     </div>
 </div>
@@ -97,12 +127,94 @@
 
             <h2><span class=" glyphicon glyphicon-comment" aria-hidden="true"></span>话题</h2>
             <hr>
-            <h3 th:text="${topicDTO.getTitle()}" style="margin-top:20px;"></h3>
-            <h6 style="color: #9d9d9d" th:text="${topicDTO.getTag()}+' | 发布时间：'+${#dates.format(topicDTO.getCreate_time(), 'yyyy-MM-dd')}+' | 浏览数：'+${topicDTO.getView_count()}"></h6>
+            <h3 th:text="${topicDTO.getTitle()}" style="margin-top:20px"></h3>
+            <h6 style="color: #9d9d9d" th:text="'作者：'+${topicDTO.getUser().username}+' | 发布时间：'+${#dates.format(topicDTO.getCreateTime(), 'yyyy-MM-dd HH:mm:ss')}+' | 浏览数：'+${topicDTO.getViewCount()}"></h6>
         </div>
         <hr>
-        <div><span th:text="${topicDTO.getDescription()}"></span></div>
+        <div style="margin-left: 20px"><span th:text="${topicDTO.getDescription()}"></span></div>
 
+        <hr>
+
+        <span class="label label-info" th:if="${topicDTO.getTagList()!=null}" th:each="tags:${topicDTO.getTagList()}" style="margin-right: 10px">
+            <span class="glyphicon glyphicon-tags"></span>
+            <span class="label label-info"  th:text="${tags}"></span>
+        </span>
+
+        <h3 th:text="${topicDTO.commentCount}+个回复"></h3>
+        <hr>
+
+        <div style="margin-left: 20px" class="media" th:if="${comments}!=null" >
+            <div th:each="comment:${comments.getComment()}">
+
+            <div class="media-left">
+                <a href="#">
+                    <img class="media-object img-rounded" th:src="${'/'+comment.getUesr().getAvatar()}">
+                </a>
+            </div>
+            <div class="media-body">
+                <h6 style="color: #9d9d9d" class="media-heading" th:text="${comment.getUesr().getUsername()}" ></h6>
+                <h5 class="media-heading" th:text="${comment.getContent()}"></h5>
+                <span class="text-find">
+                    <span th:text="${comment.getLikecount()}" style="margin-right: 3px"></span>
+                    <span th:onclick="|likeCount(${comment.getId()},this)|"  class="glyphicon glyphicon-thumbs-up likeIcon" style="cursor:pointer;" ></span> ·
+                    <span th:text="${#dates.format(comment.getCommenttime(), 'yyyy-MM-dd HH:mm:ss')}" style="float: right"></span>
+                </span>
+            </div>
+            <hr>
+            </div>
+        </div>
+        <nav aria-label="Page navigation" th:if="${comments}!=null">
+            <ul class="pagination">
+                <li th:if="${comments.isFirstButton()!=false}">
+                    <a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page=1'}" aria-label="Previous">
+                        <span aria-hidden="flase"><<</span>
+                    </a>
+                </li>
+
+                <li th:if="${comments.isPrevButton()==true}">
+                    <a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page='+${comments.getCurrentPage()-1}}">
+                        <span aria-hidden="false"><</span>
+                    </a>
+                </li>
+
+                <li  th:each="pageIndex:${comments.getPageShow()}" th:class="${comments==comments.getCurrentPage()}?'active':''"><a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page='+${pageIndex}}" th:text="${pageIndex}"></a></li>
+
+                <li th:if="${comments.isNextButton()==true}">
+                    <a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page='+${comments.getCurrentPage()+1}}">
+                        <span aria-hidden="false">></span>
+                    </a>
+                </li>
+
+                <li th:if="${comments.isFinalButton()!=false}">
+                    <a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page='+${comments.getFinalPageIndex()}}" >
+                    <a th:href="@{'/topicShow/'+${topicDTO.getId()}+'/?page='+${comments.getFinalPageIndex()}}" >
+                        <span aria-hidden="false">>></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+
+        <hr>
+
+        <div id="replyArea" style="margin-right: 15px">
+                <div class="media" th:if="${session.user}!=null">
+                    <div class="media-left">
+                        <a href="#">
+                            <img class="media-object img-rounded" th:src="${'/'+session.user.getAvatar()}">
+                        </a>
+                    </div>
+                    <div class="media-body">
+                        <h5 class="media-heading" th:text="${session.user.getUsername()}" style="padding: 10px"></h5>
+                    </div>
+                </div>
+                <br/>
+                <input type="hidden" id="topic_id" th:value="${topicDTO.getId()}">
+                <div class="form-group">
+                    <textarea class="form-control" rows="5" name="description" id="replyContent"></textarea>
+                </div>
+                <div><button type="submit" class="btn btn-success btn-lg" style="float:right;margin-bottom: 10px" onclick="post()">回复</button></div>
+        </div>
 
     </div>
     <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12">
@@ -112,15 +224,22 @@
             <div class="media">
                 <div class="media-left">
                     <a href="#">
-                        <img class="media-object img-circle" th:src="${topicDTO.getUser().getAvatar()}">
+                        <img class="media-object img-circle" th:src="${'/'+topicDTO.getUser().getAvatar()}">
                     </a>
                 </div>
                 <div class="media-body">
-                    <h5 class="media-heading" th:text="${topicDTO.getUser().getUsername()}"></h5>
+                    <h5 class="media-heading" th:text="${topicDTO.getUser().getUsername()}" style="padding-top:10px"></h5>
                 </div>
             </div>
-            <h4><span class="glyphicon glyphicon-time" aria-hidden="true"></span>发布时间:</h4>
-            <h5 th:text="${topicDTO.getC_time()}"></h5>
+            <h4><p class="glyphicon glyphicon-time" aria-hidden="true"></p>发布时间:</h4>
+            <h5 th:text="${#dates.format(topicDTO.getCreateTime(), 'yyyy-MM-dd HH:mm:ss')}"></h5>
+            <hr>
+            <h4> 相关问题:</h4>
+            <div th:if="${topicDTO.getRelatedTopics()}!=null">
+                <div th:each="topic:${topicDTO.getRelatedTopics()}">
+                    <a th:href="@{'/topicShow/'+${topic.getId()}}" th:text="${topic.getTitle()}"></a>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -1,10 +1,11 @@
 package top.andypage.page.webpage.dataTransferObject;
 
+import top.andypage.page.webpage.model.User;
+
 import java.util.List;
 
-public class PageDTO
-{
-    private List<topicDTO> topic;
+public class TopicCommentDTO {
+    private List<CommentDTO> comment;
     private boolean prevButton;
     private boolean firstButton;
     private boolean nextButton;
@@ -12,15 +13,14 @@ public class PageDTO
     private Integer currentPage;
     private List<Integer> pageShow;
     private Integer finalPageIndex;
-    private Integer newReplyCount;
+    private User user;
 
-
-    public Integer getNewReplyCount() {
-        return newReplyCount;
+    public User getUser() {
+        return user;
     }
 
-    public void setNewReplyCount(Integer newReplyCount) {
-        this.newReplyCount = newReplyCount;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Integer getFinalPageIndex() {
@@ -31,19 +31,19 @@ public class PageDTO
         this.finalPageIndex = finalPageIndex;
     }
 
-    public PageDTO(){
+    public TopicCommentDTO(){
         prevButton=true;
         firstButton=true;
         nextButton=true;
         finalButton=true;
     }
 
-    public List<topicDTO> getTopic() {
-        return topic;
+    public List<CommentDTO> getComment() {
+        return comment;
     }
 
-    public void setTopic(List<topicDTO> topic) {
-        this.topic = topic;
+    public void setComment(List<CommentDTO> comment) {
+        this.comment = comment;
     }
 
     public boolean isPrevButton() {

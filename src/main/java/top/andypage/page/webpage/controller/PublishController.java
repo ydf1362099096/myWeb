@@ -10,17 +10,20 @@ import top.andypage.page.webpage.Mapper.TopicMapper;
 import top.andypage.page.webpage.Mapper.UserMapper;
 import top.andypage.page.webpage.model.Topic;
 import top.andypage.page.webpage.model.User;
+import top.andypage.page.webpage.model.UserExample;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
-public class PublishControl {
+public class PublishController {
     @Autowired
     private UserMapper userMapper;
     @Autowired
     private TopicMapper topicMapper;
+
 
     @GetMapping("/publish")
     public String returnPublish(){
@@ -30,26 +33,34 @@ public class PublishControl {
     @PostMapping(value="/publish")
     public String publish(@RequestParam("topicInput") String topicInput,
                          @RequestParam("description") String description,
+                          @RequestParam(value = "typeSelect",defaultValue = "无") String typeSelect,
                          HttpServletRequest request,
                          HttpServletResponse response,
                           Model model){
         model.addAttribute("publishWrong",null);
+        System.out.println(typeSelect);
         Cookie cok[]=request.getCookies();
         for(Cookie cookie:cok){
             if(cookie.getName().equals("tokenForAndy")){
                 String token=cookie.getValue();
-                User user=userMapper.findByToken(token);
-                if(user!=null) {
+                UserExample userExample=new UserExample();
+                userExample.createCriteria().andTokenEqualTo(token);
+                List<User> users=userMapper.selectByExample(userExample);
+                System.out.println(users.size());
+                if(users.size()!=0) {
+                    User user=users.get(0);
                     Topic topic=new Topic();
                     topic.setTitle(topicInput);
                     topic.setDescription(description);
-                    topic.setCreate_time(System.currentTimeMillis());
-                    topic.setModified_time(topic.getCreate_time());
-                    topic.setPublisher_id(user.getId());
-                    topic.setComment_count(0);
-                    topic.setLike_count(0);
-                    topic.setView_count(0);
-                    topicMapper.insertTopic(topic);
+                    topic.setCreateTime(System.currentTimeMillis());
+                    topic.setModifiedTime(topic.getCreateTime());
+                    topic.setTag(typeSelect);
+                    topic.setPublisherId(user.getId());
+                    topic.setCommentCount(0);
+                    topic.setLikeCount(0);
+                    topic.setViewCount(0);
+                    topicMapper.insert(topic);
+
                     return "redirect:/";
                 }
             }

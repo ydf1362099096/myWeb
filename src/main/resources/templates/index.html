@@ -1,15 +1,16 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Getting Started: Serving Web Content</title>
+    <title>小小论坛</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
     <link rel="stylesheet" href="css/my.css">
     <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
     <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <script src="/js/myJs.js" type="application/javascript"></script>
 </head>
-<body>
+<body style="background: #e0e1e6">
 <nav class="navbar navbar-default boxShadow " role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -18,17 +19,15 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">a new blog</a>
+            <a class="navbar-brand" href="/">小小论坛</a>
         </div>
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="navbar-collapse collapse" id="menu" aria-expanded="false" style="height: 1px;">
             <ul class="nav navbar-nav navbar-left">
                 <li><a href="/">首页</a></li>
-                <li><a href="/aboutMe">关于我</a></li>
-                <li><a href="/categories">博客分类</a></li>
-                <li><a href="/updateLog">更新</a></li>
-                <li><a href="/community">讨论区</a></li>
+                <li><a href="/hottest">最热话题</a></li>
+                <li><a href="/categories">站长文章</a></li>
                 <li><a href="/commentsRecord">留言区</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
@@ -52,8 +51,8 @@
                     </a>
                     <ul class="dropdown-menu">
                         <li><a data-toggle="modal" data-target="#myModal">个人信息</a></li>
+                        <li><a href="/profile/myTopic">个人主页</a></li>
                         <li><a href="/publish">发起话题</a></li>
-                        <li><a href="#">Something else here</a></li>
                         <li role="separator" class="divider"></li>
                         <li><a href="/logout">退出登陆</a></li>
                     </ul>
@@ -85,31 +84,31 @@
                 <div><img th:src="${session.avatar}" height="60" width="60"/></div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button href="/logout" type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button onclick="javascript:window.location.href='/logout'" type="button" class="btn btn-primary">退出登陆</button>
             </div>
         </div>
     </div>
 </div>
 
 <div class="row" style="margin:30px">
-    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="background-color:lavender;">
+    <div class="col-lg-9 col-md-12 col-sm-12 col-xs-12" style="background:white">
         <div>
             <h2><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>发现话题</h2>
         </div>
         <hr>
         <div class="media" th:each="topic:${pageDTO.getTopic()}">
             <div class="media-left">
-                <a th:href="@{'/topicShow/'+${topic.getId()}}">
+                <a th:href="@{'/topicShow/'+${topic.getId()}}" style="color: #31b0d5">
                     <img class="media-object img-circle" th:src="${topic.getUser().getAvatar()}">
                 </a>
             </div>
             <div class="media-body">
-                <a th:href="@{'/topicShow/'+${topic.getId()}}" style="text-decoration: none;color: black"><h3 class="media-heading" th:text="${topic.getTitle()} " ></h3></a>
+                <a href="javascript:void(0);" th:onclick="|viewCount(${topic.getId()})|" style="text-decoration: none;color: black"><h3 class="media-heading" th:text="${topic.getTitle()} " ></h3></a>
 
                 <h5 th:text="${topic.getId()}"></h5>
                 <h4 class="media-heading" th:text="${#strings.abbreviate(topic.getDescription(),40)}"></h4>
-                <span class="text-find"><span th:text="${topic.getComment_count()}"></span> 回复 · <span th:text="${topic.getView_count()}"></span> 浏览 · 21：23：12</span>
+                <span class="text-find"><span th:text="${topic.getCommentCount()}"></span> 回复 · <span th:text="${topic.getViewCount()}"></span> 浏览 · <span th:text="${#dates.format(topic.getCreateTime(), 'yyyy-MM-dd HH:mm:ss')}"></span></span>
             </div>
         </div>
         <nav aria-label="Page navigation">
@@ -142,11 +141,13 @@
             </ul>
         </nav>
     </div>
-    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="background-color:lavenderblush;">
-        <h1>没啥好说的</h1>
-        <h3>§随便写</h3>
-        <h3>§随便写</h3>
-        <h3>§随便写</h3>
+    <div class="col-lg-3 col-md-12 col-sm-12 col-xs-12" style="background:white">
+        <div>
+            <h1>没啥好说的</h1>
+            <h3>§随便写</h3>
+            <h3>§随便写</h3>
+            <h3>§随便写</h3>
+        </div>
     </div>
 
 </div>
